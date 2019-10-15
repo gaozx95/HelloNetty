@@ -1,10 +1,9 @@
 package netty;
 
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -54,6 +53,17 @@ class ClientChannelInitializer extends ChannelInitializer<SocketChannel>{
     @Override
     //channel初始化时候调用initChannel方法
     protected void initChannel(SocketChannel socketChannel) throws Exception {
-        System.out.println(socketChannel);
+        socketChannel.pipeline().addLast(new ClientHandler2());
+    }
+}
+
+class ClientHandler2 extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        //channel第一次连上可用，写出一个字符串    Direct Memory直接访问内存，跳过垃圾回收机制
+        ByteBuf buf = Unpooled.copiedBuffer("hello".getBytes());
+        ctx.writeAndFlush(buf);         //会自动释放buf连接
+
     }
 }
