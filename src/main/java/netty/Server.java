@@ -49,13 +49,16 @@ class ServerChildHandler extends ChannelInboundHandlerAdapter {
             byte[] bytes = new byte[buf.readableBytes()];
             buf.getBytes(buf.readerIndex(),bytes);
             System.out.println(new String(bytes));
+
+
+            ctx.writeAndFlush(buf);
 //            System.out.println(buf);
-            System.out.println(buf.refCnt());
+//            System.out.println(buf.refCnt());
         }finally {
-            if(buf != null){
-                ReferenceCountUtil.release(buf);        //释放内存
-            }
-            System.out.println(buf.refCnt());
+//            if(buf != null){
+//                ReferenceCountUtil.release(buf);        //释放内存
+//            }
+//            System.out.println(buf.refCnt());
         }
     }
 }
