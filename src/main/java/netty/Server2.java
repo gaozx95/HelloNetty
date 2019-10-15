@@ -6,10 +6,8 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.ReferenceCountUtil;
 
-public class Server {
+public class Server2 {
     public static void main(String[] args) {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(2);
@@ -23,7 +21,7 @@ public class Server {
                         @Override
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pl = socketChannel.pipeline();
-                            pl.addLast(new ServerChildHandler());
+                            pl.addLast(new ServerChildHandler2());
                         }
                     })
                     .bind(8888)
@@ -39,7 +37,7 @@ public class Server {
     }
 }
 
-class ServerChildHandler extends ChannelInboundHandlerAdapter {
+class ServerChildHandler2 extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
